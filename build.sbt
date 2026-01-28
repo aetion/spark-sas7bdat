@@ -1,14 +1,29 @@
-import xerial.sbt.Sonatype.sonatypeCentralHost
-
 name := "spark-sas7bdat"
-version := "3.0.0"
-organization := "io.github.saurfang"
+version := {
+  val versionFile = new File("version.txt")
+  if (versionFile.exists()) {
+    IO.read(versionFile).trim
+  } else {
+    "3.0.0-SNAPSHOT" // fallback for local development
+  }
+}
+organization := "com.aetion"
 licenses := Seq("Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0.html"))
 
-// Maven Central publishing settings
-ThisBuild / sonatypeCredentialHost := sonatypeCentralHost
-ThisBuild / publishTo := sonatypePublishToBundle.value
-ThisBuild / sonatypeProfileName := "io.github.saurfang"
+// Aetion Nexus publishing settings
+publishTo := {
+  val nexus = "https://nexus.eng.aetion.com/"
+  if (isSnapshot.value)
+    Some("snapshots" at nexus + "repository/aetion-snapshots")
+  else
+    Some("releases" at nexus + "repository/aetion-releases")
+}
+
+credentials += Credentials(Path.userHome / ".sbt" / ".credentials")
+
+// Aetion Nexus resolvers for dependencies
+resolvers += "Aetion Snapshots" at "https://nexus.eng.aetion.com/repository/aetion-snapshots"
+resolvers += "Aetion Maven" at "https://nexus.eng.aetion.com/repository/aetion-maven"
 
 homepage := Some(url("https://github.com/saurfang/spark-sas7bdat"))
 scmInfo := Some(
@@ -26,8 +41,8 @@ developers := List(
   )
 )
 
-scalaVersion := "2.13.12"
-crossScalaVersions := Seq("2.11.12", "2.12.11", "2.13.12")
+scalaVersion := "2.13.18"
+crossScalaVersions := Seq("2.11.12", "2.12.11", "2.13.18")
 
 lazy val sparkVersionValue = Def.setting[String] {
   sys.props.getOrElse("spark.version", scalaBinaryVersion.value match {

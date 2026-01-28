@@ -1,3 +1,7 @@
+.bloop/
+project/metals.sbt
+.claude/
+.vscode/
 /RUNNING_PID
 /logs/
 /project/*-shim.sbt
@@ -8,3 +12,12 @@
 spark-warehouse/*
 target/*
 *.jar
+
+# SBT credentials
+.sbt/.credentials
+
+# Git version tracking
+GIT_VERSION
+
+# Version backup
+version.txt.bak

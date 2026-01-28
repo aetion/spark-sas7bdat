@@ -1,0 +1,67 @@
+---
+name: Spark SAS7BDAT Publish
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+    inputs:
+      bump_version:
+        type: boolean
+        description: 'Bump version after publishing'
+        default: false
+      publish_release:
+        type: boolean
+        description: 'Publish as release (not SNAPSHOT)'
+        default: false
+
+jobs:
+  spark-sas7bdat-publish:
+    if: |
+      github.event_name == 'push' &&
+      github.ref_name == 'master'
+
+    runs-on:
+      group: dev
+      labels: [self-hosted, dev]
+
+    steps:
+      - name: Checkout local Repo
+        uses: actions/checkout@v3
+
+      - name: Aetion Common
+        uses: aetion/actions@main
+
+      - name: Publish to Nexus (Cross-compile)
+        uses: aetion/actions/sbt@main
+        with:
+          sbtVersion: 1.9.8
+          sbtCommand: -v "+clean" "+publish"
+          javaVersion: 17
+
+  spark-sas7bdat-manual-publish:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on:
+      group: dev
+      labels: [self-hosted, dev]
+
+    steps:
+      - name: Aetion Common
+        uses: aetion/actions@main
+
+      - name: Prepare version for release
+        if: github.event.inputs.publish_release == 'true'
+        run: |
+          # Remove SNAPSHOT suffix
+          current=$(cat version.txt | sed 's/-SNAPSHOT//')
+          echo "$current" > version.txt
+          echo "Publishing release version: $(cat version.txt)"
+
+      - name: Publish to Nexus (Cross-compile)
+        uses: aetion/actions/sbt@main
+        with:
+          sbtVersion: 1.9.8
+          sbtCommand: -v "+clean" "+publish"
+          javaVersion: 17
+
