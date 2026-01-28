@@ -49,8 +49,6 @@ jobs:
     steps:
       - name: Aetion Common
         uses: aetion/actions@main
-        with:
-          git_fetch_depth: 0
 
       - name: Prepare version for release
         if: github.event.inputs.publish_release == 'true'
