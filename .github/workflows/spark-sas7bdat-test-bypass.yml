@@ -1,0 +1,20 @@
+# workaround to avoid merges being blocked by required checks being skipped and left in a "Pending State", c.f.:
+# https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/defining-the-mergeability-of-pull-requests/troubleshooting-required-status-checks#handling-skipped-but-required-checks
+---
+name: Spark SAS7BDAT Test Bypass
+
+on:
+  pull_request:
+    paths-ignore:
+      - "src/**"
+      - "build.sbt"
+      - "project/**"
+      - ".github/workflows/spark-sas7bdat*.yml"
+
+jobs:
+  spark-sas7bdat-test-bypass:
+    runs-on:
+      group: dev
+      labels: [self-hosted, dev]
+    steps:
+      - run: 'echo "No spark-sas7bdat build/publish required for this PR"'
