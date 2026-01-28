@@ -26,8 +26,8 @@ developers := List(
   )
 )
 
-scalaVersion := "2.13.12"
-crossScalaVersions := Seq("2.11.12", "2.12.11", "2.13.12")
+scalaVersion := "2.13.18"
+crossScalaVersions := Seq("2.11.12", "2.12.11", "2.13.18")
 
 lazy val sparkVersionValue = Def.setting[String] {
   sys.props.getOrElse("spark.version", scalaBinaryVersion.value match {
