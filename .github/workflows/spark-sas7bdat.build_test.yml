@@ -12,6 +12,11 @@ on:
 
 jobs:
   spark-sas7bdat-test:
+    env:
+      NEXUS_PYPI_REGISTRY: ${{ vars.NEXUS_PYPI_REGISTRY }}
+      NEXUS_GHA_ACTIONS_USERNAME: ${{ vars.NEXUS_GHA_ACTIONS_USERNAME }}
+      NEXUS_GHA_ACTIONS_PASSWORD: ${{ secrets.NEXUS_GHA_ACTIONS_PASSWORD }}
+
     runs-on:
       group: dev
       labels: [self-hosted, dev]
