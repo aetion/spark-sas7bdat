@@ -12,3 +12,12 @@ project/metals.sbt
 spark-warehouse/*
 target/*
 *.jar
+
+# SBT credentials
+.sbt/.credentials
+
+# Git version tracking
+GIT_VERSION
+
+# Version backup
+version.txt.bak
