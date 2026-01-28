@@ -32,13 +32,13 @@ jobs:
       - name: Aetion Common
         uses: aetion/actions@main
 
-      - name: Initialize version.txt
-        run: |
-          if [ ! -f version.txt ]; then
-            echo "3.0.0-SNAPSHOT" > version.txt
-            echo "Created version.txt with default version"
-          fi
-          echo "Current version: $(cat version.txt)"
+      # - name: Initialize version.txt
+      #   run: |
+      #     if [ ! -f version.txt ]; then
+      #       echo "3.0.0-SNAPSHOT" > version.txt
+      #       echo "Created version.txt with default version"
+      #     fi
+      #     echo "Current version: $(cat version.txt)"
 
       - name: Setup SBT Credentials
         run: |
@@ -100,20 +100,20 @@ jobs:
           sbtCommand: -v "+clean" "+publish"
           javaVersion: 17
 
-      - name: Bump version
-        if: github.event.inputs.bump_version == 'true'
-        run: |
-          # Bump to next SNAPSHOT version (increment patch)
-          current=$(cat version.txt | sed 's/-SNAPSHOT//')
-          major=$(echo $current | cut -d. -f1)
-          minor=$(echo $current | cut -d. -f2)
-          patch=$(echo $current | cut -d. -f3)
-          next_patch=$((patch + 1))
-          echo "$major.$minor.$next_patch-SNAPSHOT" > version.txt
-          echo "Bumped to $major.$minor.$next_patch-SNAPSHOT"
+      # - name: Bump version
+      #   if: github.event.inputs.bump_version == 'true'
+      #   run: |
+      #     # Bump to next SNAPSHOT version (increment patch)
+      #     current=$(cat version.txt | sed 's/-SNAPSHOT//')
+      #     major=$(echo $current | cut -d. -f1)
+      #     minor=$(echo $current | cut -d. -f2)
+      #     patch=$(echo $current | cut -d. -f3)
+      #     next_patch=$((patch + 1))
+      #     echo "$major.$minor.$next_patch-SNAPSHOT" > version.txt
+      #     echo "Bumped to $major.$minor.$next_patch-SNAPSHOT"
 
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add version.txt
-          git commit -m "chore: bump version to $(cat version.txt)"
-          git push
+      #     git config user.name "github-actions[bot]"
+      #     git config user.email "github-actions[bot]@users.noreply.github.com"
+      #     git add version.txt
+      #     git commit -m "chore: bump version to $(cat version.txt)"
+      #     git push
