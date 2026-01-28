@@ -14,7 +14,7 @@ jobs:
   spark-sas7bdat-test:
     runs-on:
       group: dev
-      labels: [self-hosted, dev-xlarge]
+      labels: [self-hosted, dev]
     steps:
       - name: Checkout local Repo
         uses: actions/checkout@v3

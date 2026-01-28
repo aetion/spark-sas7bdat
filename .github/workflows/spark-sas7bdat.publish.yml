@@ -23,7 +23,7 @@ jobs:
       github.ref_name == 'master'
     runs-on:
       group: dev
-      labels: [self-hosted, dev-xlarge]
+      labels: [self-hosted, dev]
 
     steps:
       - name: Checkout local Repo
