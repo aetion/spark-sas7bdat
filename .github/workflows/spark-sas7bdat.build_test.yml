@@ -12,30 +12,13 @@ on:
 
 jobs:
   spark-sas7bdat-test:
-    env:
-      NEXUS_PYPI_REGISTRY: ${{ vars.NEXUS_PYPI_REGISTRY }}
-      NEXUS_GHA_ACTIONS_USERNAME: ${{ vars.NEXUS_GHA_ACTIONS_USERNAME }}
-      NEXUS_GHA_ACTIONS_PASSWORD: ${{ secrets.NEXUS_GHA_ACTIONS_PASSWORD }}
-
     runs-on:
       group: dev
       labels: [self-hosted, dev]
     steps:
-      - name: Checkout local Repo
-        uses: actions/checkout@v3
 
       - name: Aetion Common
         uses: aetion/actions@main
-
-      - name: Setup SBT Credentials
-        run: |
-          mkdir -p ~/.sbt
-          cat > ~/.sbt/.credentials << EOF
-          realm=Sonatype Nexus Repository Manager
-          host=nexus.eng.aetion.com
-          user=${{ vars.NEXUS_GHA_ACTIONS_USERNAME }}
-          password=${{ secrets.NEXUS_GHA_ACTIONS_PASSWORD }}
-          EOF
 
       - name: Run Tests and Package (Cross-compile all Scala versions)
         uses: aetion/actions/sbt@main
