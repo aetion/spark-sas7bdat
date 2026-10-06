@@ -1,0 +1,9 @@
+version: 1
+type: org
+fedramp: false
+production_branch: master
+environment: production
+temporary: false
+repo_kind:
+  - application
+dv_registry_id: "pod:rwegen-platform"
